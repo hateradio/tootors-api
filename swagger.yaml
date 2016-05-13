@@ -1,0 +1,246 @@
+---
+swagger: "2.0"
+info:
+  description: "Hooks for the Tootors API"
+  version: "1.0.0"
+  title: "Tootors API"
+host: "api.local.dev"
+basePath: "/api"
+schemes:
+- "http"
+produces:
+- "application/json"
+paths:
+  /login:
+    post:
+      tags:
+      - "Tootor"
+      summary: "Account access"
+      description: "Log in and out of Tootors app\n"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Tootor account"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+  /logout:
+    post:
+      tags:
+      - "Tootor"
+      summary: "Account access"
+      description: "Log in and out of Tootors app\n"
+      parameters: []
+      responses:
+        200:
+          description: "Tootor account"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+  /tootor:
+    get:
+      summary: "Gets all Tootors"
+      description: "Search Tootors"
+      operationId: "get_tootors"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Search Tootors by name"
+        required: false
+        type: "string"
+      - name: "location"
+        in: "query"
+        description: "Search Tootors by location"
+        required: false
+        type: "string"
+      - name: "focus"
+        in: "query"
+        description: "Search Tootors by focus"
+        required: false
+        type: "string"
+      - name: "api-key"
+        in: "query"
+        description: "Your API key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "An array of Tootors"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: "Create Tootor"
+      description: "Update Tootor information"
+      operationId: "create_tootor_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api-key"
+        in: "query"
+        description: "API Key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A tootor"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+  /tootor/{id}:
+    get:
+      tags:
+      - "Tootor"
+      summary: "Read Tootor"
+      description: "Find tootor by an ID"
+      operationId: "find_tootor_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of Tootor to fetch"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A tootor"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+    put:
+      tags:
+      - "Tootor"
+      summary: "Update Tootor"
+      description: "Update tootor by an ID"
+      operationId: "update_tootor_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of Tootor to fetch"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A tootor"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      tags:
+      - "Tootor"
+      summary: "Delete Tootor"
+      description: "Delete Tootor by an ID"
+      operationId: "delete_tootor_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of Tootor to fetch"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A tootor"
+          schema:
+            $ref: "#/definitions/Tootor"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Tootor:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      is_tootor:
+        type: "boolean"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      name:
+        type: "string"
+      price:
+        type: "number"
+        format: "double"
+      street:
+        type: "string"
+      city:
+        type: "string"
+      state:
+        type: "string"
+      zip:
+        type: "string"
+      focus:
+        type: "string"
+      description:
+        type: "string"
+        format: "date"
+      created_at:
+        type: "string"
+        format: "date-time"
+      updated_at:
+        type: "string"
+        format: "date-time"
+      visited_at:
+        type: "string"
+        format: "date-time"
+      seo-name:
+        type: "string"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
+  inline_response_200:
+    properties:
+      results:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tootor"
+      num_results:
+        type: "number"
+      status:
+        type: "string"
