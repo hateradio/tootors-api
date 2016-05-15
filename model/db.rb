@@ -1,0 +1,138 @@
+require 'pg'
+#require './tootor.rb'
+
+class TootorsDb
+  def self.all
+    conn = PG.connect(dbname: 'android')
+    list = conn.exec('select * from tootors')
+    conn.close
+    list.to_a
+  end
+
+  def self.search(clause, text)
+    conn = PG.connect(dbname: 'android')
+
+    property = conn.escape_string(clause)
+    res = conn.exec_params("select * from tootors where #{property} ilike $1::text",
+      ["%#{text}%"]) #ilike is case insensitive
+
+    conn.close
+
+    res.to_a
+  end
+
+  def self.find(id)
+
+    conn = PG.connect(dbname: 'android')
+
+    res = conn.exec_params('select * from tootors where id = $1::int', [id])
+
+    conn.close
+
+    if (res.num_tuples)
+      t = Tootor.new
+
+      res.first.each { |key, val| t.public_method("#{key}=").call(val) }
+
+      t
+    else
+      nil
+    end
+  end
+
+  def self.insert(tootor)
+    conn = PG.connect(dbname: 'android')
+
+    # id serial primary key,
+
+    # is_tootor boolean,
+    # username varchar(255),
+    # seo_name varchar(255),
+    # email varchar(255),
+    # password text,
+
+    # name varchar(255),
+    # phone varchar(255),
+    # street varchar(255),
+    # city varchar(255),
+    # state char(2),
+
+    # zip char(5),
+    # focus text,
+    # description text,
+    # created_at timestamp,
+    # updated_at timestamp,
+    # visited_at timestamp
+
+    # t = Tootor.new
+    # t.is_tootor = true
+    # t.username = 'user1'
+    # t.password = '123'
+    # t.name = 'John Smith'
+    # t.phone = '310 555 1828'
+    # t.price = '8.00'
+    # t.street = '123 St'
+    # t.city = 'Los Angeles'
+    # t.state = 'CA'
+    # t.zip = '90001'
+    # t.focus = 'Math'
+    # t.description = 'I know a lot!'
+    # t.seo_name = 'user1'
+
+    insert = conn.exec_params('insert into tootors values (nextval(\'tootors_id_seq\'),
+      $1::boolean, $2::varchar, $3::varchar, $4::varchar, $5::text,
+      $6::varchar, $7::varchar, $8::varchar, $9::varchar, $10::varchar,
+      $11::varchar, $12::text, $13::text,
+      current_timestamp, current_timestamp, current_timestamp)',
+      tootor.to_a[1, 13])
+
+    tootor = nil
+
+    if (insert.cmd_tuples == 1)
+      id = conn.exec('SELECT currval(\'tootors_id_seq\')')
+      tootor = self.find(id.first['currval'].to_i)
+    end
+
+    conn.close
+
+    tootor
+  end
+
+  def self.update(tootor)
+    conn = PG.connect(dbname: 'android')
+
+    if (tootor.id > 0)
+
+      # p tootor.to_a[0, 13]
+      update = conn.exec_params('update tootors set
+        is_tootor = $2::boolean, username = $3::varchar, seo_name = $4::varchar,
+        email = $5::varchar, password = $6::text,
+        name = $7::varchar, phone = $8::varchar, street = $9::varchar,
+        city = $10::varchar, state = $11::varchar,
+        zip = $12::varchar, focus = $13::text, description = $14::text,
+        updated_at = current_timestamp
+        where id = $1::int',
+        tootor.to_a[0, 14])
+    end
+
+    # t = Tootor.new
+    # t.id = 8
+    # t.is_tootor = true
+    # t.username = 'user8'
+    # t.seo_name = 'user8'
+    # t.password = '123'
+    # t.name = 'John Smith'
+    # t.phone = '310 555 1828'
+    # t.price = '8.00'
+    # t.street = '123 St'
+    # t.city = 'Los Angeles'
+    # t.state = 'CA'
+    # t.zip = '90001'
+    # t.focus = 'Math'
+    # t.description = 'I know a lot!'
+
+    conn.close
+
+    tootor
+  end
+end

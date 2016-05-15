@@ -1,14 +1,15 @@
 require 'json'
 
 class Tootor
-  attr_accessor :id, :is_tootor, :username, :password, :name, :street,
-    :city, :state, :zip, :focus, :description, :created_at, :updated_at,
-    :visited_at, :seo_name
+  attr_accessor :id, :email, :username, :password, :name, :phone,
+    :street, :city, :state, :zip, :focus, :description, :created_at,
+    :updated_at, :visited_at, :seo_name
 
-  attr_reader :price
+  attr_reader :price, :is_tootor
 
   def initialize
     @id = 0
+    @email = ''
     @is_tootor = false
     @username = ''
     @password = ''
@@ -49,11 +50,23 @@ class Tootor
     self
   end
 
+  def is_tootor=(bool)
+    b = false
+
+    if (String === bool)
+      b = ['t', 'true'].include?(bool)
+    elsif (TrueClass === bool || FalseClass === bool)
+      b = bool
+    end
+
+    @is_tootor = b
+  end
+
   def price=(p)
     if (p.nil?)
-      0
+      @price = 0
     else
-      p.to_f
+      @price = p.to_f
     end
   end
 
@@ -73,7 +86,7 @@ class Tootor
   end
 
   def string_props
-    ['username', 'password', 'name', 'street', 'city', 'state', 'zip', 'focus',
+    ['email', 'username', 'password', 'name', 'phone', 'street', 'city', 'state', 'zip', 'focus',
       'description', 'seo_name']
   end
 
@@ -83,6 +96,13 @@ class Tootor
     else
       attr.squeeze(' ').strip.gsub(/[<]/, '&gt;')
     end
+  end
+
+  def to_a
+    [@id, @is_tootor, @username, @seo_name, @email, @password,
+      @name, @phone, @street, @city, @state,
+      @zip, @focus, @description,
+      @created_at, @updated_at, @visited_at]
   end
 
   def to_hash

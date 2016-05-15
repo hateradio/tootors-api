@@ -1,4 +1,5 @@
 require './lib/swaggering'
+require './model/db'
 require './model/tootor'
 
 # only need to extend if you want special configuration!
