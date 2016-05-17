@@ -24,7 +24,7 @@ class Generator
   end
 
   def insert
-    conn = PG.connect(dbname: 'android')
+    conn = PG.connect(ENV['DB_CONNECTION'])
     res = conn.exec(template)
     conn.close
     res
