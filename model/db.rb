@@ -1,16 +1,27 @@
 require 'pg'
 #require './tootor.rb'
 
+# When running this code on the server, make sure to export
+# https://deveiate.org/code/pg/PG/Connection.html
+# export DB_CONNECTION='dbname=my-db-name user=my-user-name password=my-pass'
 class TootorsDb
+  def self.connect
+    if (ENV['DB_CONNECTION'])
+      PG.connect(ENV['DB_CONNECTION'])
+    else
+      PG.connect(dbname: 'android')
+    end
+  end
+
   def self.all
-    conn = PG.connect(dbname: 'android')
+    conn = self.connect
     list = conn.exec('select * from tootors')
     conn.close
     list.to_a
   end
 
   def self.search(clause, text)
-    conn = PG.connect(dbname: 'android')
+    conn = self.connect
 
     property = conn.escape_string(clause)
     res = conn.exec_params("select * from tootors where #{property} ilike $1::text",
@@ -23,7 +34,7 @@ class TootorsDb
 
   def self.find(id)
 
-    conn = PG.connect(dbname: 'android')
+    conn = self.connect
 
     res = conn.exec_params('select * from tootors where id = $1::int', [id])
 
@@ -41,7 +52,7 @@ class TootorsDb
   end
 
   def self.insert(tootor)
-    conn = PG.connect(dbname: 'android')
+    conn = self.connect
 
     # id serial primary key,
 
@@ -99,7 +110,7 @@ class TootorsDb
   end
 
   def self.update(tootor)
-    conn = PG.connect(dbname: 'android')
+    conn = self.connect
 
     if (tootor.id > 0)
 
