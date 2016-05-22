@@ -13,27 +13,39 @@ class TootorsDb
     end
   end
 
+  # fixes is_tootor when PG returns 't' or 'f' instead of booleans
+  def self.fixbooleans(results)
+    results.to_a.map { |x|
+      x['is_tootor'] = x['is_tootor'] == 't'
+      x
+     }
+  end
+
   def self.all
     conn = self.connect
     list = conn.exec('select * from tootors')
     conn.close
-    list.to_a
+    self.fixbooleans(list)
   end
 
   def self.search(clause, text)
     conn = self.connect
 
     property = conn.escape_string(clause)
-    res = conn.exec_params("select * from tootors where #{property} ilike $1::text",
-      ["%#{text}%"]) #ilike is case insensitive
+
+    if (property == "is_tootor")
+      res = conn.exec_params("select * from tootors where is_tootor = $1::boolean", [text])
+    else
+      res = conn.exec_params("select * from tootors where #{property} ilike $1::text",
+        ["%#{text}%"]) #ilike is case insensitive
+    end
 
     conn.close
 
-    res.to_a
+    self.fixbooleans(res)
   end
 
   def self.find(id)
-
     conn = self.connect
 
     res = conn.exec_params('select * from tootors where id = $1::int', [id])

@@ -102,6 +102,9 @@ MyApp.add_route('GET', '/api/tootor', {
     tootors = TootorsDb.search('zip', params['location'])
   elsif (params['focus'])
     tootors = TootorsDb.search('focus', params['focus'])
+  elsif (params['is_tootor'])
+    bool = params['is_tootor'] == "true"
+    tootors = TootorsDb.search('is_tootor', bool)
   else
     tootors = TootorsDb.all
   end

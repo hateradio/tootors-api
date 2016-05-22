@@ -74,6 +74,11 @@ paths:
         description: "Search Tootors by focus"
         required: false
         type: "string"
+      - name: "is_tootor"
+        in: "query"
+        description: "Search Tootors or non-Tootors only"
+        required: false
+        type: "string"
       - name: "api-key"
         in: "query"
         description: "Your API key"
