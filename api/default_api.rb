@@ -40,6 +40,7 @@ MyApp.add_route('POST', '/api/tootor', {
     else
       status 400
       body({code: 400, message: 'Could not save user!'})
+    end
   end
 
 end
