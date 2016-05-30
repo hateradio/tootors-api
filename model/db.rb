@@ -63,44 +63,27 @@ class TootorsDb
     end
   end
 
-  def self.insert(tootor)
+  def self.find_with_password(id, password)
     conn = self.connect
 
-    # id serial primary key,
+    res = conn.exec_params('select * from tootors where id = $1::int and password = $2::text',
+      [id, password])
 
-    # is_tootor boolean,
-    # username varchar(255),
-    # seo_name varchar(255),
-    # email varchar(255),
-    # password text,
+    conn.close
 
-    # name varchar(255),
-    # phone varchar(255),
-    # street varchar(255),
-    # city varchar(255),
-    # state char(2),
+    if (res.num_tuples > 0)
+      t = Tootor.new
 
-    # zip char(5),
-    # focus text,
-    # description text,
-    # created_at timestamp,
-    # updated_at timestamp,
-    # visited_at timestamp
+      res.first.each { |key, val| t.public_method("#{key}=").call(val) }
 
-    # t = Tootor.new
-    # t.is_tootor = true
-    # t.username = 'user1'
-    # t.password = '123'
-    # t.name = 'John Smith'
-    # t.phone = '310 555 1828'
-    # t.price = '8.00'
-    # t.street = '123 St'
-    # t.city = 'Los Angeles'
-    # t.state = 'CA'
-    # t.zip = '90001'
-    # t.focus = 'Math'
-    # t.description = 'I know a lot!'
-    # t.seo_name = 'user1'
+      t
+    else
+      nil
+    end
+  end
+
+  def self.insert(tootor)
+    conn = self.connect
 
     insert = conn.exec_params('insert into tootors values (nextval(\'tootors_id_seq\'),
       $1::boolean, $2::varchar, $3::varchar, $4::varchar, $5::text,
@@ -138,22 +121,6 @@ class TootorsDb
         where id = $1::int',
         tootor.to_a[0, 16])
     end
-
-    # t = Tootor.new
-    # t.id = 8
-    # t.is_tootor = true
-    # t.username = 'user8'
-    # t.seo_name = 'user8'
-    # t.password = '123'
-    # t.name = 'John Smith'
-    # t.phone = '310 555 1828'
-    # t.price = '8.00'
-    # t.street = '123 St'
-    # t.city = 'Los Angeles'
-    # t.state = 'CA'
-    # t.zip = '90001'
-    # t.focus = 'Math'
-    # t.description = 'I know a lot!'
 
     conn.close
 

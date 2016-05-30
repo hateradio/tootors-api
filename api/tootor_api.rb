@@ -62,7 +62,7 @@ MyApp.add_route('GET', '/api/tootor/{id}', {
   end
 end
 
-#todo
+
 MyApp.add_route('POST', '/api/login', {
   "resourcePath" => "/Tootor",
   "summary" => "Account access",
@@ -100,10 +100,18 @@ MyApp.add_route('POST', '/api/login', {
   # the guts live here
   content_type :json
 
-  {"message" => "yes, it worked"}.to_json
+  tootor = TootorsDb.find_with_password(params['id'], params['password'])
+
+  if (tootor)
+    tootor.to_json
+  else
+    status 404
+    body({code: 404, message: 'Invalid username or password!'}.to_json)
+  end
+
 end
 
-#todo
+#ignored
 MyApp.add_route('POST', '/api/logout', {
   "resourcePath" => "/Tootor",
   "summary" => "Account access",
@@ -121,7 +129,9 @@ MyApp.add_route('POST', '/api/logout', {
   # the guts live here
   content_type :json
 
-  {"message" => "yes, it worked"}.to_json
+  status 200
+  body({code: 200, message: 'Logged out!'}.to_json)
+
 end
 
 #todo
@@ -149,5 +159,13 @@ MyApp.add_route('PUT', '/api/tootor/{id}', {
   # the guts live here
   content_type :json
 
-  {"message" => "yes, it worked"}.to_json
+  tootor = TootorsDb.find(params[:id])
+
+  if (tootor.errors.length > 0)
+    tootor.to_json_with_errors
+    code 404
+    body({code: 404, message: 'Could not save user'}.to_json)
+  else
+
+  end
 end

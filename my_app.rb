@@ -6,7 +6,7 @@ require './model/tootor'
 class MyApp < Swaggering
   self.configure do |config|
     config.api_version = '1.0.0'
-	mime_type :json, 'application/json'
+    mime_type :json, 'application/json'
   end
 end
 

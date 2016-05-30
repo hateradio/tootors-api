@@ -33,7 +33,7 @@ class Tootor
   def fill(params)
     p params
 
-    instance_variables.each { |prop|
+    (instance_variables - [:@id]).each { |prop|
       at_property = "#{prop}"
       ary_property = prop.to_s.delete('@')
 
@@ -88,7 +88,8 @@ class Tootor
   end
 
   def string_props
-    ['email', 'username', 'password', 'name', 'phone', 'street', 'city', 'state', 'zip', 'focus',
+    ['email', 'username', 'password', 'name', 'phone', 'street', 'city',
+      'state', 'zip', 'focus',
       'description', 'seo_name', 'image', 'video']
   end
 
