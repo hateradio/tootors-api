@@ -196,19 +196,21 @@ definitions:
         format: "int64"
       is_tootor:
         type: "boolean"
-      email:
-        type: "string"
       username:
+        type: "string"
+      seo_name:
+        type: "string"
+      email:
         type: "string"
       password:
         type: "string"
       name:
         type: "string"
+      phone:
+        type: "string"
       price:
         type: "number"
         format: "double"
-      phone:
-        type: "string"
       street:
         type: "string"
       city:
@@ -224,6 +226,8 @@ definitions:
         format: "date"
       picture:
         type: "string"
+      video:
+        type: "string"
       created_at:
         type: "string"
         format: "date-time"
@@ -233,10 +237,6 @@ definitions:
       visited_at:
         type: "string"
         format: "date-time"
-      seo-name:
-        type: "string"
-      video_link:
-        type: "string"
   Error:
     type: "object"
     properties:

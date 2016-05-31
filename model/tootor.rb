@@ -3,7 +3,7 @@ require 'json'
 class Tootor
   attr_accessor :id, :email, :username, :password, :name, :phone,
     :street, :city, :state, :zip, :focus, :description, :created_at,
-    :updated_at, :visited_at, :seo_name, :image, :video
+    :updated_at, :visited_at, :seo_name, :picture, :video
 
   attr_reader :price, :is_tootor
 
@@ -23,7 +23,7 @@ class Tootor
     @description = ''
     @seo_name = ''
     @video = ''
-    @image = ''
+    @picture = ''
     @created_at = nil
     @updated_at = nil
     @visited_at = nil
@@ -90,7 +90,7 @@ class Tootor
   def string_props
     ['email', 'username', 'password', 'name', 'phone', 'street', 'city',
       'state', 'zip', 'focus',
-      'description', 'seo_name', 'image', 'video']
+      'description', 'seo_name', 'picture', 'video']
   end
 
   def clean_str(attr)
@@ -104,8 +104,8 @@ class Tootor
   # converts Tootor to an array - properties ordered for inserting into DB
   def to_a
     [@id, @is_tootor, @username, @seo_name, @email, @password,
-      @name, @phone, @street, @city, @state,
-      @zip, @focus, @description, @image, @video,
+      @name, @phone, @price, @street, @city, @state,
+      @zip, @focus, @description, @picture, @video,
       @created_at, @updated_at, @visited_at]
   end
 
