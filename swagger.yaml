@@ -223,7 +223,6 @@ definitions:
         type: "string"
       description:
         type: "string"
-        format: "date"
       picture:
         type: "string"
       video:
