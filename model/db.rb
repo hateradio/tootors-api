@@ -63,11 +63,11 @@ class TootorsDb
     end
   end
 
-  def self.find_with_password(id, password)
+  def self.find_with_password(username, password)
     conn = self.connect
 
-    res = conn.exec_params('select * from tootors where id = $1::int and password = $2::text',
-      [id, password])
+    res = conn.exec_params('select * from tootors where username = $1::varchar and password = $2::text',
+      [username, password])
 
     conn.close
 

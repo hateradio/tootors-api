@@ -100,7 +100,7 @@ MyApp.add_route('POST', '/api/login', {
   # the guts live here
   content_type :json
 
-  tootor = TootorsDb.find_with_password(params['id'], params['password'])
+  tootor = TootorsDb.find_with_password(params['username'], params['password'])
 
   if (tootor)
     tootor.to_json
