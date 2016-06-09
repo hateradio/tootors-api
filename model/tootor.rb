@@ -14,6 +14,7 @@ class Tootor
     @username = ''
     @password = ''
     @name = ''
+    @phone = ''
     @price = 0.0
     @street = ''
     @city = ''
