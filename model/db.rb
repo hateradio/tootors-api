@@ -100,17 +100,18 @@ class TootorsDb
       current_timestamp, current_timestamp, current_timestamp)',
       tootor.to_a[1, 16])
 
-    tootor = nil
+    id = nil
 
     if (insert.cmd_tuples == 1)
       id = conn.exec('SELECT currval(\'tootors_id_seq\')')
-      tootor = self.find(id.first['currval'].to_i)
-      tootor.id = id
+      # tootor = self.find(id.first['currval'].to_i)
+      id = id.first['currval'].to_i
+      p id
     end
 
     conn.close
 
-    tootor
+    id
   end
 
   def self.update(tootor)

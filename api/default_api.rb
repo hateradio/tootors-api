@@ -34,16 +34,21 @@ MyApp.add_route('POST', '/api/tootor', {
     status 400
     body(tootor.to_json_with_errors)
   else
-    saved = TootorsDb.insert(tootor)
+    id = TootorsDb.insert(tootor)
 
-    if (saved)
-      tootor.to_json
+    if (id > 0)
+      tootor = TootorsDb.find(id)
+      if (tootor)
+        tootor.to_json
+      else
+        status 400
+        body({code: 400, message: 'Could not save user!'})
+      end
     else
       status 400
       body({code: 400, message: 'Could not save user!'})
     end
   end
-
 end
 
 
