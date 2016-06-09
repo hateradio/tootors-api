@@ -28,13 +28,21 @@ class TootorsDb
     self.fixbooleans(list)
   end
 
-  def self.search(clause, text)
+  def self.search(clause, text, is_tootor)
     conn = self.connect
 
     property = conn.escape_string(clause)
 
+    # ios = IO.new STDOUT.fileno
+    # conn.trace(ios)
+
+    p [property, text, is_tootor]
+
     if (property == "is_tootor")
       res = conn.exec_params("select * from tootors where is_tootor = $1::boolean", [text])
+    elsif (is_tootor != nil)
+      res = conn.exec_params("select * from tootors where #{property} ilike $1::text and is_tootor = $2::boolean",
+        ["%#{text}%", is_tootor]) #ilike is case insensitive
     else
       res = conn.exec_params("select * from tootors where #{property} ilike $1::text",
         ["%#{text}%"]) #ilike is case insensitive
@@ -66,7 +74,7 @@ class TootorsDb
   def self.find_with_password(username, password)
     conn = self.connect
 
-    res = conn.exec_params('select * from tootors where username = $1::varchar and password = $2::text',
+    res = conn.exec_params('select * from tootors where username ~* $1::varchar and password = $2::text',
       [username, password])
 
     conn.close

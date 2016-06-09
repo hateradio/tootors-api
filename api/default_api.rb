@@ -103,15 +103,22 @@ MyApp.add_route('GET', '/api/tootor', {
   # the guts live here
   content_type :json
 
-  if (params['name'])
-    tootors = TootorsDb.search('name', params['name'])
-  elsif (params['location'])
-    tootors = TootorsDb.search('zip', params['location'])
-  elsif (params['focus'])
-    tootors = TootorsDb.search('focus', params['focus'])
-  elsif (params['is_tootor'])
-    bool = params['is_tootor'] == "true"
-    tootors = TootorsDb.search('is_tootor', bool)
+  keys = ['is_tootor', 'name', 'location', 'focus']
+  inter = keys & params.keys;
+
+  hash = {}
+  inter.each { |key| hash[key] = params[key] }
+
+  find_tootors = hash['is_tootor'] == nil ? nil : hash['is_tootor'] == 'true'
+
+  if (find_tootors && hash.length == 1)
+    tootors = TootorsDb.search('is_tootor', find_tootors)
+  elsif (hash['name'])
+    tootors = TootorsDb.search('name', hash['name'], find_tootors)
+  elsif (hash['location'])
+    tootors = TootorsDb.search('zip', hash['location'], find_tootors)
+  elsif (hash['focus'])
+    tootors = TootorsDb.search('focus', hash['focus'], find_tootors)
   else
     tootors = TootorsDb.all
   end
