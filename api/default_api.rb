@@ -31,7 +31,8 @@ MyApp.add_route('POST', '/api/tootor', {
   tootor = Tootor.new.fill(params)
 
   if (tootor.errors.length > 0)
-    tootor.to_json_with_errors
+    status 400
+    body(tootor.to_json_with_errors)
   else
     saved = TootorsDb.insert(tootor)
 
