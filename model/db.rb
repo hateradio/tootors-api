@@ -95,8 +95,8 @@ class TootorsDb
 
     insert = conn.exec_params('insert into tootors values (nextval(\'tootors_id_seq\'),
       $1::boolean, $2::varchar, $3::varchar, $4::varchar, $5::text,
-      $6::varchar, $7::varchar, $7::decimal, $8::varchar, $9::varchar, $10::varchar,
-      $11::varchar, $12::text, $13::text, $14::text, $15::text
+      $6::varchar, $7::varchar, $8::decimal, $9::varchar, $10::varchar, $11::varchar,
+      $12::varchar, $13::text, $14::text, $15::text, $16::text,
       current_timestamp, current_timestamp, current_timestamp)',
       tootor.to_a[1, 16])
 
@@ -123,7 +123,7 @@ class TootorsDb
         name = $7::varchar, phone = $8::varchar, price = $9::decimal,
         street = $10::varchar, city = $11::varchar, state = $12::varchar,
         zip = $13::varchar, focus = $14::text, description = $15::text,
-        picture = $16::text, video = $17::text
+        picture = $16::text, video = $17::text,
         updated_at = current_timestamp
         where id = $1::int',
         tootor.to_a[0, 17])
