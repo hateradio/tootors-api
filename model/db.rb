@@ -105,6 +105,7 @@ class TootorsDb
     if (insert.cmd_tuples == 1)
       id = conn.exec('SELECT currval(\'tootors_id_seq\')')
       tootor = self.find(id.first['currval'].to_i)
+      tootor.id = id
     end
 
     conn.close
