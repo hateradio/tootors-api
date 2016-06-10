@@ -129,5 +129,5 @@ MyApp.add_route('GET', '/api/tootor', {
     tootors = TootorsDb.all
   end
 
-  {status: 200, num_tuples: tootors.length, items: tootors}.to_json
+  {status: 200, num_tuples: tootors.length, results: tootors}.to_json
 end
