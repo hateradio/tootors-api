@@ -6,7 +6,7 @@ require './db.rb'
 CSV.foreach('tootors.csv', headers: true) do |row|
   t = Tootor.new
 
-  t.is_tootor = row[0]
+  t.is_tootor = row[0].downcase == 'true'
   t.username = row[1]
   t.seo_name= row[2]
   t.email = row[3]
@@ -20,7 +20,7 @@ CSV.foreach('tootors.csv', headers: true) do |row|
   t.zip = row[11]
   t.focus = row[12]
   t.description = row[13]
-  t.picture = row[14]
+  # t.picture = row[14]
   t.video = row[15]
 
   # p t
