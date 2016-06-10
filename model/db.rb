@@ -28,7 +28,7 @@ class TootorsDb
     self.fixbooleans(list)
   end
 
-  def self.search(clause, text, is_tootor)
+  def self.search(clause, text, is_tootor=nil)
     conn = self.connect
 
     property = conn.escape_string(clause)

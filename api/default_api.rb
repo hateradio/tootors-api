@@ -117,7 +117,7 @@ MyApp.add_route('GET', '/api/tootor', {
 
   find_tootors = hash['is_tootor'] == nil ? nil : hash['is_tootor'] == 'true'
 
-  if (find_tootors && hash.length == 1)
+  if (find_tootors != nil && hash.length == 1)
     tootors = TootorsDb.search('is_tootor', find_tootors)
   elsif (hash['name'])
     tootors = TootorsDb.search('name', hash['name'], find_tootors)
