@@ -2,8 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     pg (0.18.4)
-    rack (1.6.4)
-    rack-protection (1.5.3)
+    rack (1.6.11)
+    rack-protection (1.5.5)
       rack
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -17,8 +17,10 @@ PLATFORMS
 
 DEPENDENCIES
   pg
+  rack (>= 1.6.11)
+  rack-protection (>= 1.5.5)
   sinatra
   sinatra-cross_origin
 
 BUNDLED WITH
-   1.11.2
+   1.16.0
